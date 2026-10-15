@@ -1,13 +1,57 @@
+using CreditWorks.Infrastructure.Persistence;
+using CreditWorks.Infrastructure.Persistence.Seed;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// --------------------------------------------------
+// 1. Configure database connection
+// --------------------------------------------------
+
+var connectionString = builder.Configuration
+    .GetConnectionString("DefaultConnection");
+
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException(
+        "Database connection string is not configured.");
+}
+
+// --------------------------------------------------
+// 2. Register application services
+// --------------------------------------------------
+
+builder.Services.AddDbContext<CreditWorksDbContext>(options =>
+{
+    options.UseSqlServer(connectionString);
+});
+
+// Register Swagger services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// --------------------------------------------------
+// 3. Build application
+// --------------------------------------------------
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// --------------------------------------------------
+// 4. Seed initial database data
+// --------------------------------------------------
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider
+        .GetRequiredService<CreditWorksDbContext>();
+
+    await DatabaseSeeder.SeedAsync(db);
+}
+
+// --------------------------------------------------
+// 5. Configure HTTP request pipeline
+// --------------------------------------------------
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -16,29 +60,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+// Vehicle and Category API endpoints
+// will be implemented in the next phase.
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

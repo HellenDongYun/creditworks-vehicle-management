@@ -6,27 +6,28 @@ namespace CreditWorks.Domain.Entities;
 public sealed class VehicleCategory
 {
     public int Id { get; private set; }
-    public string Name { get; private set; }
-    public string Icon { get; private set; }
-    public WeightRange Range { get; private set; }
+
+    public string Name { get; private set; } = null!;
+
+    public string Icon { get; private set; } = null!;
+
+    public WeightRange Range { get; private set; } = null!;
+
+    private VehicleCategory()
+    {
+        // Required by EF Core
+    }
 
     public VehicleCategory(
         string name,
         string icon,
         WeightRange range)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new DomainValidationException(
-                "Category name is required.");
-
-        if (string.IsNullOrWhiteSpace(icon))
-            throw new DomainValidationException(
-                "Category icon is required.");
+        Validate(name, icon, range);
 
         Name = name.Trim();
         Icon = icon.Trim();
-        Range = range ?? throw new DomainValidationException(
-            "Category range is required.");
+        Range = range;
     }
 
     public bool ContainsWeight(decimal weight)
@@ -39,6 +40,18 @@ public sealed class VehicleCategory
         string icon,
         WeightRange range)
     {
+        Validate(name, icon, range);
+
+        Name = name.Trim();
+        Icon = icon.Trim();
+        Range = range;
+    }
+
+    private static void Validate(
+        string name,
+        string icon,
+        WeightRange range)
+    {
         if (string.IsNullOrWhiteSpace(name))
             throw new DomainValidationException(
                 "Category name is required.");
@@ -47,9 +60,16 @@ public sealed class VehicleCategory
             throw new DomainValidationException(
                 "Category icon is required.");
 
-        Name = name.Trim();
-        Icon = icon.Trim();
-        Range = range ?? throw new DomainValidationException(
-            "Category range is required.");
+        if (range is null)
+            throw new DomainValidationException(
+                "Category range is required.");
+
+        if (name.Trim().Length > 100)
+            throw new DomainValidationException(
+                "Category name cannot exceed 100 characters.");
+
+        if (icon.Trim().Length > 100)
+            throw new DomainValidationException(
+                "Category icon cannot exceed 100 characters.");
     }
 }
