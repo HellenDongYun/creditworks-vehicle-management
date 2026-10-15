@@ -1,0 +1,38 @@
+
+# Secrets
+.env
+.env.*
+!.env.example
+**/appsettings.Development.json
+**/appsettings.Production.json
+**/secrets.json
+
+# .NET
+**/bin/
+**/obj/
+**/TestResults/
+**/coverage/
+
+# Rider / IDE
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.iml
+
+# React / Node
+**/node_modules/
+**/dist/
+**/.vite/
+**/coverage/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Local databases
+*.mdf
+*.ldf
+*.bak

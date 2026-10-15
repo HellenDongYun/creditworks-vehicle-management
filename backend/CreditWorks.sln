@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreditWorks.Api", "CreditWorks.Api\CreditWorks.Api.csproj", "{0FE89C54-1D0E-47E3-86AE-92984FE51CA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreditWorks.Application", "CreditWorks.Application\CreditWorks.Application.csproj", "{F230A9BC-978B-40DF-9694-AAE06058E7EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreditWorks.Domain", "CreditWorks.Domain\CreditWorks.Domain.csproj", "{3BD4E400-DE55-41B1-BEA8-C133ED2CAC1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreditWorks.Infrastructure", "CreditWorks.Infrastructure\CreditWorks.Infrastructure.csproj", "{3628C029-FCDF-47B1-B0F0-F1AAE519B906}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AC8841AF-4D91-4900-854B-86595580C67F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreditWorks.Domain.Tests", "tests\CreditWorks.Domain.Tests\CreditWorks.Domain.Tests.csproj", "{D61D93A7-0F8D-46B2-AB83-47FB379D86C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreditWorks.IntegrationTests", "tests\CreditWorks.IntegrationTests\CreditWorks.IntegrationTests.csproj", "{B6B92C25-A7CC-440D-A26C-4F361DBC9C8E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0FE89C54-1D0E-47E3-86AE-92984FE51CA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FE89C54-1D0E-47E3-86AE-92984FE51CA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FE89C54-1D0E-47E3-86AE-92984FE51CA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FE89C54-1D0E-47E3-86AE-92984FE51CA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F230A9BC-978B-40DF-9694-AAE06058E7EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F230A9BC-978B-40DF-9694-AAE06058E7EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F230A9BC-978B-40DF-9694-AAE06058E7EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F230A9BC-978B-40DF-9694-AAE06058E7EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BD4E400-DE55-41B1-BEA8-C133ED2CAC1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BD4E400-DE55-41B1-BEA8-C133ED2CAC1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BD4E400-DE55-41B1-BEA8-C133ED2CAC1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BD4E400-DE55-41B1-BEA8-C133ED2CAC1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3628C029-FCDF-47B1-B0F0-F1AAE519B906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3628C029-FCDF-47B1-B0F0-F1AAE519B906}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3628C029-FCDF-47B1-B0F0-F1AAE519B906}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3628C029-FCDF-47B1-B0F0-F1AAE519B906}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D61D93A7-0F8D-46B2-AB83-47FB379D86C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D61D93A7-0F8D-46B2-AB83-47FB379D86C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D61D93A7-0F8D-46B2-AB83-47FB379D86C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D61D93A7-0F8D-46B2-AB83-47FB379D86C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6B92C25-A7CC-440D-A26C-4F361DBC9C8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6B92C25-A7CC-440D-A26C-4F361DBC9C8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6B92C25-A7CC-440D-A26C-4F361DBC9C8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6B92C25-A7CC-440D-A26C-4F361DBC9C8E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D61D93A7-0F8D-46B2-AB83-47FB379D86C8} = {AC8841AF-4D91-4900-854B-86595580C67F}
+		{B6B92C25-A7CC-440D-A26C-4F361DBC9C8E} = {AC8841AF-4D91-4900-854B-86595580C67F}
+	EndGlobalSection
+EndGlobal
