@@ -1,13 +1,14 @@
+using CreditWorks.Api.Exceptions;
+using CreditWorks.Application.Interfaces;
+using CreditWorks.Application.Services;
 using CreditWorks.Infrastructure.Persistence;
+using CreditWorks.Infrastructure.Persistence.Repositories;
 using CreditWorks.Infrastructure.Persistence.Seed;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --------------------------------------------------
-// 1. Configure database connection
-// --------------------------------------------------
-
+// 1. Database connection
 var connectionString = builder.Configuration
     .GetConnectionString("DefaultConnection");
 
@@ -17,29 +18,29 @@ if (string.IsNullOrWhiteSpace(connectionString))
         "Database connection string is not configured.");
 }
 
-// --------------------------------------------------
-// 2. Register application services
-// --------------------------------------------------
-
 builder.Services.AddDbContext<CreditWorksDbContext>(options =>
-{
-    options.UseSqlServer(connectionString);
-});
+    options.UseSqlServer(connectionString));
 
-// Register Swagger services
+// 2. Repositories
+builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
+builder.Services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+// 3. Application services
+builder.Services.AddScoped<IVehicleService, VehicleService>();
+
+// 4. Controllers and Swagger
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// --------------------------------------------------
-// 3. Build application
-// --------------------------------------------------
+// 5. Global exception handling
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
-// --------------------------------------------------
-// 4. Seed initial database data
-// --------------------------------------------------
-
+// 6. Seed initial data
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider
@@ -48,9 +49,8 @@ using (var scope = app.Services.CreateScope())
     await DatabaseSeeder.SeedAsync(db);
 }
 
-// --------------------------------------------------
-// 5. Configure HTTP request pipeline
-// --------------------------------------------------
+// 7. Middleware
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
@@ -60,7 +60,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Vehicle and Category API endpoints
-// will be implemented in the next phase.
+app.MapControllers();
 
 app.Run();
+
+// Allows WebApplicationFactory in integration tests
+public partial class Program { }
