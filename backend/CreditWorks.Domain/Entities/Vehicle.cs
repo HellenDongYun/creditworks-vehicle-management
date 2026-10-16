@@ -57,12 +57,16 @@ public sealed class Vehicle
                 "A valid manufacturer is required.");
     }
 
+
     private static void ValidateYear(int year)
     {
-        if (year < 1886 || year > DateTime.UtcNow.Year + 1)
+        if (year < 1886 || year > DateTime.UtcNow.Year)
+        {
             throw new DomainValidationException(
-                "Year of manufacture is invalid.");
+                $"Year of manufacture must be between 1886 and {DateTime.UtcNow.Year}.");
+        }
     }
+
 
     private static void ValidateWeight(decimal weight)
     {

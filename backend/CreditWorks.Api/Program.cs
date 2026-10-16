@@ -25,6 +25,7 @@ builder.Services.AddDbContext<CreditWorksDbContext>(options =>
 builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
 builder.Services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryManagementService, CategoryManagementService>();
 
 // 3. Application services
 builder.Services.AddScoped<IVehicleService, VehicleService>();

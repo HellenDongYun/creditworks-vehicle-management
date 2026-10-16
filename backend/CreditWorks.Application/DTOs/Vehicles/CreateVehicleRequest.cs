@@ -12,8 +12,10 @@ public sealed class CreateVehicleRequest
     public int ManufacturerId { get; init; }
 
     [Range(1886, 9999)]
+    [NotFutureYear]
     public int YearOfManufacture { get; init; }
 
     [Range(typeof(decimal), "0.01", "9999999999999999.99")]
+    [DecimalPrecision(2)]
     public decimal Weight { get; init; }
 }
