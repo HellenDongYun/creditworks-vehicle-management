@@ -13,7 +13,7 @@ import {
 import { getVehicles } from './api/vehicles'
 import AddVehicleForm from './components/AddVehicleForm'
 import CategoryManagement from './components/CategoryManagement'
-
+import CategoryIcon from './components/CategoryIcon'
 import type {
   Vehicle,
   VehicleSortBy,
@@ -306,9 +306,9 @@ function App() {
                                 <td>{vehicle.weight.toFixed(2)} kg</td>
                                 <td>
                             <span className="category-pill">
-                              <CarFront size={15} />
-                              {vehicle.categoryName}
-                            </span>
+                               <CategoryIcon name={vehicle.categoryIcon} size={15} />
+                                {vehicle.categoryName}
+                             </span>
                                 </td>
                               </tr>
                           ))

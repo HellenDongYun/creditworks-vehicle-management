@@ -13,7 +13,7 @@ import {
     getCategories,
     updateCategoryConfiguration,
 } from '../api/categories'
-
+import CategoryIcon from './CategoryIcon'
 import type {
     VehicleCategory,
     CategoryItemRequest,
@@ -335,16 +335,26 @@ export default function CategoryManagement() {
                                     </td>
 
                                     <td>
-                                        <input
-                                            aria-label="Category icon"
-                                            value={row.icon}
-                                            onChange={event =>
-                                                updateRow(row.key, 'icon', event.target.value)
-                                            }
-                                            required
-                                            maxLength={100}
-                                            disabled={saving}
-                                        />
+                                        <div
+                                            style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '10px',
+                                            }}
+                                        >
+                                            <CategoryIcon name={row.icon} size={20} />
+
+                                            <input
+                                                aria-label="Category icon"
+                                                value={row.icon}
+                                                onChange={event =>
+                                                    updateRow(row.key, 'icon', event.target.value)
+                                                }
+                                                required
+                                                maxLength={100}
+                                                disabled={saving}
+                                            />
+                                        </div>
                                     </td>
 
                                     <td>
