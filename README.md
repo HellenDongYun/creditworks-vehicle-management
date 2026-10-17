@@ -118,17 +118,23 @@ dotnet build
 
 This repository includes EF Core migrations under `backend/CreditWorks.Infrastructure/Persistence/Migrations`. The database schema must be created **before** starting the API, because the startup seeder queries the manufacturer and category tables.
 
-From the **repository root**, apply the existing migrations:
+From the **repository root**, restore the local .NET tools and apply the existing database migrations:
 
 ```bash
+dotnet tool restore
+
 dotnet ef database update \
   --project backend/CreditWorks.Infrastructure \
   --startup-project backend/CreditWorks.Api
 ```
 
-This requires the `dotnet-ef` CLI tool. If it is not installed, install a version compatible with the project's EF Core 8 packages, then rerun the command. Ensure `ConnectionStrings__DefaultConnection` (or an equivalent configuration source) is available to the command and that SQL Server is accepting connections.
+The repository includes a local .NET tool manifest (`.config/dotnet-tools.json`) that pins the Entity Framework Core CLI (`dotnet-ef`) to version `8.0.32`. Running `dotnet tool restore` installs the required tool locally, so reviewers do not need to install it globally.
 
-The EF Core migration workflow and API startup have been successfully exercised during local development. `Program.cs` calls `DatabaseSeeder.SeedAsync(db, seedDemoVehicles: app.Environment.IsDevelopment())` on startup. The seeder **does not create tables or apply migrations**; it inserts initial data only when the relevant tables are empty.
+Before applying migrations, ensure SQL Server is running and `ConnectionStrings__DefaultConnection` (or an equivalent configuration source) is correctly configured.
+
+The EF Core migration workflow and API startup have been successfully exercised during local development. `Program.cs` calls `DatabaseSeeder.SeedAsync(db, seedDemoVehicles: app.Environment.IsDevelopment())` on startup.
+
+The seeder **does not create tables or apply migrations**. It initializes reference data when the corresponding tables are empty. In the Development environment, it also inserts eight sample vehicles if the Vehicles table is empty. Existing vehicle records are preserved, and demo vehicle seeding is disabled outside the Development environment.
 
 **Initial manufacturers:** Mazda, Mercedes, Honda, Ferrari, Toyota.
 

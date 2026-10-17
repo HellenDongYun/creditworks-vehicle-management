@@ -1,9 +1,8 @@
 
 import { useEffect, useState } from 'react'
 import type { SyntheticEvent } from 'react'
-import axios from 'axios'
 import { X } from 'lucide-react'
-
+import { getApiErrorMessage } from '../api/errorMessage'
 import { createVehicle } from '../api/vehicles'
 import { getManufacturers } from '../api/manufacturers'
 import type { Manufacturer } from '../types/manufacturer'
@@ -119,27 +118,9 @@ export default function AddVehicleForm({
             })
 
             onCreated()
-        } catch (err) {
+        } catch (err: unknown) {
             console.error(err)
-
-            if (axios.isAxiosError(err)) {
-                const data: unknown = err.response?.data
-
-                if (
-                    typeof data === 'object' &&
-                    data !== null &&
-                    'detail' in data &&
-                    typeof data.detail === 'string'
-                ) {
-                    setError(data.detail)
-                } else {
-                    setError(
-                        'Unable to create vehicle. Please check your input.',
-                    )
-                }
-            } else {
-                setError('An unexpected error occurred.')
-            }
+            setError(getApiErrorMessage(err))
         } finally {
             setSubmitting(false)
         }
@@ -202,7 +183,7 @@ export default function AddVehicleForm({
                             value={ownerName}
                             onChange={event => setOwnerName(event.target.value)}
                             placeholder="e.g. Alice Brown"
-                            maxLength={100}
+                            maxLength={150}
                             required
                             autoFocus
                         />

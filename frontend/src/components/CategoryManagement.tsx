@@ -1,14 +1,13 @@
-
 import { useEffect, useState } from 'react'
 import type { SyntheticEvent } from 'react'
-import axios from 'axios'
 import {
     Plus,
     RefreshCw,
     Save,
     Trash2,
 } from 'lucide-react'
-
+import { CATEGORY_ICON_OPTIONS } from '../constants/categoryIcons'
+import { getApiErrorMessage } from '../api/errorMessage'
 import {
     getCategories,
     updateCategoryConfiguration,
@@ -244,23 +243,8 @@ export default function CategoryManagement() {
             const updated = await getCategories()
             setRows(updated.map(toFormRow))
             setSuccess('Categories saved successfully.')
-        } catch (err) {
-            if (axios.isAxiosError(err)) {
-                const data: unknown = err.response?.data
-
-                if (
-                    typeof data === 'object' &&
-                    data !== null &&
-                    'detail' in data &&
-                    typeof data.detail === 'string'
-                ) {
-                    setError(data.detail)
-                } else {
-                    setError('Failed to save categories.')
-                }
-            } else {
-                setError('An unexpected error occurred.')
-            }
+        } catch (err: unknown) {
+            setError(getApiErrorMessage(err))
         } finally {
             setSaving(false)
         }
@@ -344,16 +328,26 @@ export default function CategoryManagement() {
                                         >
                                             <CategoryIcon name={row.icon} size={20} />
 
-                                            <input
+                                            <select
                                                 aria-label="Category icon"
                                                 value={row.icon}
                                                 onChange={event =>
                                                     updateRow(row.key, 'icon', event.target.value)
                                                 }
                                                 required
-                                                maxLength={100}
                                                 disabled={saving}
-                                            />
+                                            >
+                                                {row.icon && !CATEGORY_ICON_OPTIONS.some(option => option.value === row.icon) && (
+                                                    <option value={row.icon}>
+                                                        {row.icon} (existing icon)
+                                                    </option>
+                                                )}
+                                                {CATEGORY_ICON_OPTIONS.map(option => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </select>
                                         </div>
                                     </td>
 
