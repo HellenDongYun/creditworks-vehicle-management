@@ -47,7 +47,9 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider
         .GetRequiredService<CreditWorksDbContext>();
 
-    await DatabaseSeeder.SeedAsync(db);
+    await DatabaseSeeder.SeedAsync(
+        db,
+        seedDemoVehicles: app.Environment.IsDevelopment());
 }
 
 // 7. Middleware

@@ -1,3 +1,4 @@
+
 # CreditWorks Vehicle Management
 
 A full-stack vehicle management application developed for the CreditWorks Software Engineer technical assignment. It allows users to register vehicles, sort and view vehicle records, and manage configurable weight-based vehicle categories.
@@ -127,7 +128,7 @@ dotnet ef database update \
 
 This requires the `dotnet-ef` CLI tool. If it is not installed, install a version compatible with the project's EF Core 8 packages, then rerun the command. Ensure `ConnectionStrings__DefaultConnection` (or an equivalent configuration source) is available to the command and that SQL Server is accepting connections.
 
-The EF Core migration workflow and API startup have been successfully exercised during local development. `Program.cs` then calls `DatabaseSeeder.SeedAsync(db)` on startup. The seeder **does not create tables or apply migrations**; it inserts initial data only when the relevant tables are empty.
+The EF Core migration workflow and API startup have been successfully exercised during local development. `Program.cs` calls `DatabaseSeeder.SeedAsync(db, seedDemoVehicles: app.Environment.IsDevelopment())` on startup. The seeder **does not create tables or apply migrations**; it inserts initial data only when the relevant tables are empty.
 
 **Initial manufacturers:** Mazda, Mercedes, Honda, Ferrari, Toyota.
 
@@ -140,6 +141,17 @@ The EF Core migration workflow and API startup have been successfully exercised 
 | Heavy | `truck` | `[2500, ∞)` |
 
 The minimum boundary is inclusive, and a finite maximum is exclusive. The seeder does not overwrite existing manufacturer or category records when their respective tables contain data. The Docker named volume `sqlserver_data` retains database files across ordinary container restarts.
+
+#### Development Demo Vehicle Data
+
+In the Development environment, the application is configured to seed **eight sample vehicles**, but **only when the `Vehicles` table is empty**. The examples cover multiple manufacturers, manufacture years, and category boundaries, including exactly `500 kg` and `2500 kg`.
+
+If the database already contains vehicles, demo vehicle insertion is skipped and all existing records are preserved. For example, a local database containing five previously created vehicles will continue to show those five vehicles after startup; it will not automatically increase to eight or thirteen.
+
+Demo vehicle seeding is disabled outside the Development environment. Restarting the application does not add duplicate demo vehicles while the table contains records.
+
+**Note:** The eight-vehicle seeding behaviour is configured in code; verification against a fresh, empty database is still pending.
+
 
 ### 6. Run the backend
 
