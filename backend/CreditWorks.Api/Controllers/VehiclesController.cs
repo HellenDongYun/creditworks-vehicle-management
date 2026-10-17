@@ -15,15 +15,19 @@ public sealed class VehiclesController : ControllerBase
         _vehicleService = vehicleService;
     }
 
+   
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<VehicleResponse>>> GetAll(
-        CancellationToken cancellationToken)
+        [FromQuery] string sortBy = "ownerName",
+        [FromQuery] string direction = "asc",
+        CancellationToken cancellationToken = default)
     {
         var vehicles = await _vehicleService.GetAllAsync(
-            cancellationToken);
+            sortBy, direction, cancellationToken);
 
         return Ok(vehicles);
     }
+
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<VehicleResponse>> GetById(

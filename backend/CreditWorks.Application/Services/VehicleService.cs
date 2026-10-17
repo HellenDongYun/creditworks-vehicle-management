@@ -4,6 +4,7 @@ using CreditWorks.Application.Exceptions;
 using CreditWorks.Application.Interfaces;
 using CreditWorks.Domain.Entities;
 using CreditWorks.Domain.Services;
+using CreditWorks.Domain.Exceptions;
 
 namespace CreditWorks.Application.Services;
 
@@ -24,16 +25,44 @@ public sealed class VehicleService : IVehicleService
         _categories = categories;
     }
 
+
     public async Task<IReadOnlyList<VehicleResponse>> GetAllAsync(
+        string sortBy = "ownerName",
+        string direction = "asc",
         CancellationToken cancellationToken = default)
     {
-        var vehicles = await _vehicles.GetAllAsync(cancellationToken);
+        var validSortFields = new[]
+        {
+            "ownerName",
+            "manufacturer",
+            "year",
+            "weight"
+        };
+
+        if (!validSortFields.Contains(
+                sortBy, StringComparer.OrdinalIgnoreCase))
+        {
+            throw new DomainValidationException(
+                "Invalid sortBy value. Allowed values: ownerName, manufacturer, year, weight.");
+        }
+
+        if (!string.Equals(direction, "asc", StringComparison.OrdinalIgnoreCase)
+            && !string.Equals(direction, "desc", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new DomainValidationException(
+                "Invalid direction value. Allowed values: asc, desc.");
+        }
+
+        var vehicles = await _vehicles.GetAllAsync(
+            sortBy, direction, cancellationToken);
+
         var categories = await _categories.GetAllAsync(cancellationToken);
 
         return vehicles
             .Select(v => MapResponse(v, categories))
             .ToList();
     }
+
 
     public async Task<VehicleResponse> GetByIdAsync(
         int id,

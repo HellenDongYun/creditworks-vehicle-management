@@ -1,38 +1,54 @@
 
-# Secrets
+# ========================================
+# Secrets and environment variables
+# ========================================
 .env
 .env.*
 !.env.example
+
+# ASP.NET Core local configuration
 **/appsettings.Development.json
 **/appsettings.Production.json
 **/secrets.json
 
-# .NET
+# ========================================
+# .NET build and test output
+# ========================================
 **/bin/
 **/obj/
 **/TestResults/
 **/coverage/
 
-# Rider / IDE
+# ========================================
+# JetBrains Rider / IDE
+# ========================================
 .idea/
 *.suo
 *.user
 *.userosscache
 *.sln.iml
 
-# React / Node
+# ========================================
+# React / Node.js / Vite
+# ========================================
 **/node_modules/
 **/dist/
 **/.vite/
-**/coverage/
 
+# ========================================
 # macOS
+# ========================================
 .DS_Store
 
+# ========================================
 # Logs
+# ========================================
 *.log
+npm-debug.log*
 
-# Local databases
+# ========================================
+# Local SQL Server database files
+# ========================================
 *.mdf
 *.ldf
 *.bak

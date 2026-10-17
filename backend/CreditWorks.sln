@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreditWorks.Domain.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreditWorks.IntegrationTests", "tests\CreditWorks.IntegrationTests\CreditWorks.IntegrationTests.csproj", "{B6B92C25-A7CC-440D-A26C-4F361DBC9C8E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreditWorks.Application.Tests", "tests\CreditWorks.Application.Tests\CreditWorks.Application.Tests.csproj", "{DC8CB211-7B45-440C-8A39-C895F57C2EE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,9 +52,14 @@ Global
 		{B6B92C25-A7CC-440D-A26C-4F361DBC9C8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6B92C25-A7CC-440D-A26C-4F361DBC9C8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6B92C25-A7CC-440D-A26C-4F361DBC9C8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC8CB211-7B45-440C-8A39-C895F57C2EE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC8CB211-7B45-440C-8A39-C895F57C2EE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC8CB211-7B45-440C-8A39-C895F57C2EE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC8CB211-7B45-440C-8A39-C895F57C2EE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D61D93A7-0F8D-46B2-AB83-47FB379D86C8} = {AC8841AF-4D91-4900-854B-86595580C67F}
 		{B6B92C25-A7CC-440D-A26C-4F361DBC9C8E} = {AC8841AF-4D91-4900-854B-86595580C67F}
+		{DC8CB211-7B45-440C-8A39-C895F57C2EE7} = {AC8841AF-4D91-4900-854B-86595580C67F}
 	EndGlobalSection
 EndGlobal

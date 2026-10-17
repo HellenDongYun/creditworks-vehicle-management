@@ -5,6 +5,8 @@ namespace CreditWorks.Application.Interfaces;
 public interface IVehicleService
 {
     Task<IReadOnlyList<VehicleResponse>> GetAllAsync(
+        string sortBy = "ownerName",
+        string direction = "asc",
         CancellationToken cancellationToken = default);
 
     Task<VehicleResponse> GetByIdAsync(

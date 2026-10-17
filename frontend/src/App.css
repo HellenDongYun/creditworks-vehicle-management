@@ -1,0 +1,564 @@
+
+/* ========================================
+   1. Global App Layout
+======================================== */
+
+#root {
+  min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+  background: #f5f7fb;
+}
+
+/* ========================================
+   2. Top Navigation
+======================================== */
+
+.topbar {
+  height: 76px;
+  display: flex;
+  align-items: center;
+  padding: 0 6%;
+  background: #ffffff;
+  border-bottom: 1px solid #e5eaf1;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  color: #ffffff;
+  background: #2563eb;
+}
+
+.brand strong,
+.brand span {
+  display: block;
+}
+
+.brand strong {
+  font-size: 17px;
+  color: #17233a;
+}
+
+.brand span {
+  font-size: 12px;
+  color: #788397;
+  margin-top: 2px;
+}
+
+/* ========================================
+   3. Main Content
+======================================== */
+
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.page-heading h1 {
+  margin: 0;
+  font-size: 30px;
+  color: #18243a;
+}
+
+.page-heading p,
+.card-heading p {
+  margin: 8px 0 0;
+  color: #718096;
+  font-size: 14px;
+}
+
+/* ========================================
+   4. Header Action Buttons
+======================================== */
+
+.heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Refresh Button */
+
+.refresh-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid #dce3ed;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #344054;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+          background 0.2s ease,
+          border-color 0.2s ease;
+}
+
+.refresh-button:hover {
+  background: #f3f6fb;
+}
+
+.refresh-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Add Vehicle / Submit Button */
+
+.primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 17px;
+  border: 1px solid #2563eb;
+  border-radius: 9px;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+          background 0.2s ease,
+          transform 0.2s ease;
+}
+
+.primary-button:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.primary-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.primary-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   5. Vehicle List Card
+======================================== */
+
+.vehicles-card {
+  background: #ffffff;
+  border: 1px solid #e6eaf0;
+  border-radius: 14px;
+  box-shadow: 0 5px 24px rgba(15, 23, 42, 0.04);
+  overflow: hidden;
+}
+
+.card-heading {
+  padding: 24px;
+  border-bottom: 1px solid #eef1f5;
+}
+
+.card-heading h2 {
+  margin: 0;
+  font-size: 19px;
+  color: #17233a;
+}
+
+/* ========================================
+   6. Vehicle Table
+======================================== */
+
+.table-container {
+  overflow-x: auto;
+}
+
+.vehicles-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  min-width: 750px;
+}
+
+.vehicles-table th {
+  background: #f9fafc;
+  padding: 15px 22px;
+  border-bottom: 1px solid #e9edf3;
+  color: #526078;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.vehicles-table td {
+  padding: 18px 22px;
+  border-bottom: 1px solid #f0f2f6;
+  color: #344054;
+  font-size: 14px;
+}
+
+.vehicles-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.vehicles-table tbody tr:hover {
+  background: #fafcff;
+}
+
+.owner-cell {
+  font-weight: 600;
+  color: #18243a !important;
+}
+
+/* ========================================
+   7. Sorting Buttons
+======================================== */
+
+.sort-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.sort-button:hover,
+.sort-button.active {
+  color: #2563eb;
+}
+
+/* ========================================
+   8. Category Badge
+======================================== */
+
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ========================================
+   9. Loading, Empty State, Errors
+======================================== */
+
+.table-status {
+  text-align: center;
+  padding: 40px !important;
+  color: #788397 !important;
+}
+
+.error-message {
+  margin: 20px 24px;
+  padding: 14px;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 14px;
+}
+
+.error-message button {
+  margin-left: 12px;
+  border: none;
+  background: transparent;
+  color: #b91c1c;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.error-message button:hover {
+  text-decoration: underline;
+}
+
+/* ========================================
+   10. Add Vehicle Modal Backdrop
+======================================== */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.55);
+}
+
+/* ========================================
+   11. Add Vehicle Modal Container
+======================================== */
+
+.vehicle-modal {
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  box-sizing: border-box;
+  padding: 28px;
+
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.2);
+}
+
+/* ========================================
+   12. Modal Heading
+======================================== */
+
+.modal-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.modal-heading h2 {
+  margin: 0;
+  color: #18243a;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.modal-heading p {
+  margin: 7px 0 0;
+  color: #718096;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Close X Button */
+
+.modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px;
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.modal-close:hover:not(:disabled) {
+  background: #f1f5f9;
+}
+
+.modal-close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   13. Form Fields
+======================================== */
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.form-field label {
+  color: #344054;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-field input,
+.form-field select {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 12px;
+  border: 1px solid #d5dce7;
+  border-radius: 9px;
+
+  background: #ffffff;
+  color: #18243a;
+
+  font: inherit;
+  font-size: 14px;
+
+  transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+}
+
+.form-field input::placeholder {
+  color: #98a2b3;
+}
+
+.form-field input:hover,
+.form-field select:hover {
+  border-color: #94a3b8;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.form-field input:disabled,
+.form-field select:disabled {
+  background: #f8fafc;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   14. Form Validation Error
+======================================== */
+
+.form-error {
+  padding: 12px 14px;
+  margin-bottom: 18px;
+
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+
+  background: #fef2f2;
+  color: #b91c1c;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ========================================
+   15. Modal Footer Buttons
+======================================== */
+
+.modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.cancel-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 11px 17px;
+  border: 1px solid #d5dce7;
+  border-radius: 9px;
+
+  background: #ffffff;
+  color: #344054;
+
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.cancel-button:hover:not(:disabled) {
+  background: #f8fafc;
+}
+
+.cancel-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   16. Keyboard Accessibility
+======================================== */
+
+.refresh-button:focus-visible,
+.primary-button:focus-visible,
+.cancel-button:focus-visible,
+.modal-close:focus-visible,
+.sort-button:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.35);
+  outline-offset: 3px;
+}
+
+/* ========================================
+   17. Responsive Design
+======================================== */
+
+@media (max-width: 640px) {
+  .main-content {
+    padding: 28px 16px;
+  }
+
+  .page-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .page-heading h1 {
+    font-size: 24px;
+  }
+
+  .topbar {
+    padding: 0 16px;
+  }
+
+  .heading-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .vehicle-modal {
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .modal-heading h2 {
+    font-size: 20px;
+  }
+
+  .modal-actions {
+    flex-wrap: wrap;
+  }
+
+  .modal-actions .primary-button,
+  .modal-actions .cancel-button {
+    flex: 1;
+  }
+}
