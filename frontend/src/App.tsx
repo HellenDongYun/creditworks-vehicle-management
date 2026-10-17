@@ -7,10 +7,12 @@ import {
   CarFront,
   Plus,
   RefreshCw,
+  Tags,
 } from 'lucide-react'
 
 import { getVehicles } from './api/vehicles'
 import AddVehicleForm from './components/AddVehicleForm'
+import CategoryManagement from './components/CategoryManagement'
 
 import type {
   Vehicle,
@@ -19,6 +21,8 @@ import type {
 } from './types/vehicle'
 
 import './App.css'
+
+type ActivePage = 'vehicles' | 'categories'
 
 interface SortHeaderProps {
   label: string
@@ -42,7 +46,6 @@ function SortHeader({
           type="button"
           className={`sort-button ${active ? 'active' : ''}`}
           onClick={() => onSort(field)}
-          aria-label={`Sort by ${label}`}
       >
         {label}
 
@@ -60,22 +63,25 @@ function SortHeader({
 }
 
 function App() {
-  const [vehicles, setVehicles] = useState<Vehicle[]>([])
+  const [activePage, setActivePage] =
+      useState<ActivePage>('vehicles')
 
+  const [vehicles, setVehicles] = useState<Vehicle[]>([])
   const [sortBy, setSortBy] =
       useState<VehicleSortBy>('ownerName')
-
   const [direction, setDirection] =
       useState<SortDirection>('asc')
 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [refreshKey, setRefreshKey] = useState(0)
-
-  // Controls whether the Add Vehicle modal is visible.
   const [showAddVehicle, setShowAddVehicle] = useState(false)
 
   useEffect(() => {
+    if (activePage !== 'vehicles') {
+      return
+    }
+
     let cancelled = false
 
     async function loadVehicles() {
@@ -92,9 +98,7 @@ function App() {
         console.error(err)
 
         if (!cancelled) {
-          setError(
-              'Failed to load vehicles. Please try again.',
-          )
+          setError('Failed to load vehicles. Please try again.')
         }
       } finally {
         if (!cancelled) {
@@ -108,7 +112,7 @@ function App() {
     return () => {
       cancelled = true
     }
-  }, [sortBy, direction, refreshKey])
+  }, [activePage, sortBy, direction, refreshKey])
 
   function handleSort(field: VehicleSortBy) {
     if (sortBy === field) {
@@ -122,16 +126,12 @@ function App() {
   }
 
   function handleVehicleCreated() {
-    // Close modal after successful creation.
     setShowAddVehicle(false)
-
-    // Reload vehicles while keeping current sorting.
     setRefreshKey(value => value + 1)
   }
 
   return (
       <div className="app-shell">
-        {/* Top navigation */}
         <header className="topbar">
           <div className="brand">
             <div className="brand-icon">
@@ -143,171 +143,197 @@ function App() {
               <span>Vehicle Management</span>
             </div>
           </div>
+
+          <nav className="app-navigation">
+            <button
+                type="button"
+                className={`nav-button ${
+                    activePage === 'vehicles' ? 'active' : ''
+                }`}
+                onClick={() => setActivePage('vehicles')}
+            >
+              <CarFront size={17} />
+              Vehicles
+            </button>
+
+            <button
+                type="button"
+                className={`nav-button ${
+                    activePage === 'categories' ? 'active' : ''
+                }`}
+                onClick={() => setActivePage('categories')}
+            >
+              <Tags size={17} />
+              Categories
+            </button>
+          </nav>
         </header>
 
         <main className="main-content">
-          {/* Page heading and action buttons */}
-          <div className="page-heading">
-            <div>
-              <h1>Vehicle Management</h1>
-              <p>View and manage registered vehicles.</p>
-            </div>
+          {activePage === 'vehicles' ? (
+              <>
+                <div className="page-heading">
+                  <div>
+                    <h1>Vehicle Management</h1>
+                    <p>View and manage registered vehicles.</p>
+                  </div>
 
-            <div className="heading-actions">
-              <button
-                  className="refresh-button"
-                  type="button"
-                  onClick={() =>
-                      setRefreshKey(value => value + 1)
-                  }
-                  disabled={loading}
-              >
-                <RefreshCw size={16} />
-                Refresh
-              </button>
+                  <div className="heading-actions">
+                    <button
+                        className="refresh-button"
+                        type="button"
+                        onClick={() =>
+                            setRefreshKey(value => value + 1)
+                        }
+                        disabled={loading}
+                    >
+                      <RefreshCw size={16} />
+                      Refresh
+                    </button>
 
-              <button
-                  className="primary-button"
-                  type="button"
-                  onClick={() => setShowAddVehicle(true)}
-              >
-                <Plus size={16} />
-                Add Vehicle
-              </button>
-            </div>
-          </div>
-
-          {/* Vehicle list */}
-          <section className="vehicles-card">
-            <div className="card-heading">
-              <div>
-                <h2>Vehicles</h2>
-
-                <p>
-                  {loading
-                      ? 'Loading vehicles...'
-                      : `${vehicles.length} registered vehicles`}
-                </p>
-              </div>
-            </div>
-
-            {error && (
-                <div className="error-message" role="alert">
-                  {error}
-
-                  <button
-                      type="button"
-                      onClick={() =>
-                          setRefreshKey(value => value + 1)
-                      }
-                  >
-                    Retry
-                  </button>
+                    <button
+                        className="primary-button"
+                        type="button"
+                        onClick={() => setShowAddVehicle(true)}
+                    >
+                      <Plus size={16} />
+                      Add Vehicle
+                    </button>
+                  </div>
                 </div>
-            )}
 
-            <div className="table-container">
-              <table className="vehicles-table">
-                <thead>
-                <tr>
-                  <th>
-                    <SortHeader
-                        label="Owner Name"
-                        field="ownerName"
-                        sortBy={sortBy}
-                        direction={direction}
-                        onSort={handleSort}
-                    />
-                  </th>
+                <section className="vehicles-card">
+                  <div className="card-heading">
+                    <div>
+                      <h2>Vehicles</h2>
+                      <p>
+                        {loading
+                            ? 'Loading vehicles...'
+                            : `${vehicles.length} registered vehicles`}
+                      </p>
+                    </div>
+                  </div>
 
-                  <th>
-                    <SortHeader
-                        label="Manufacturer"
-                        field="manufacturer"
-                        sortBy={sortBy}
-                        direction={direction}
-                        onSort={handleSort}
-                    />
-                  </th>
+                  {error && (
+                      <div className="error-message" role="alert">
+                        {error}
+                        <button
+                            type="button"
+                            onClick={() =>
+                                setRefreshKey(value => value + 1)
+                            }
+                        >
+                          Retry
+                        </button>
+                      </div>
+                  )}
 
-                  <th>
-                    <SortHeader
-                        label="Year"
-                        field="year"
-                        sortBy={sortBy}
-                        direction={direction}
-                        onSort={handleSort}
-                    />
-                  </th>
+                  <div className="table-container">
+                    <table className="vehicles-table">
+                      <thead>
+                      <tr>
+                        <th>
+                          <SortHeader
+                              label="Owner Name"
+                              field="ownerName"
+                              sortBy={sortBy}
+                              direction={direction}
+                              onSort={handleSort}
+                          />
+                        </th>
 
-                  <th>
-                    <SortHeader
-                        label="Weight"
-                        field="weight"
-                        sortBy={sortBy}
-                        direction={direction}
-                        onSort={handleSort}
-                    />
-                  </th>
+                        <th>
+                          <SortHeader
+                              label="Manufacturer"
+                              field="manufacturer"
+                              sortBy={sortBy}
+                              direction={direction}
+                              onSort={handleSort}
+                          />
+                        </th>
 
-                  <th>Category</th>
-                </tr>
-                </thead>
+                        <th>
+                          <SortHeader
+                              label="Year"
+                              field="year"
+                              sortBy={sortBy}
+                              direction={direction}
+                              onSort={handleSort}
+                          />
+                        </th>
 
-                <tbody>
-                {loading ? (
-                    <tr>
-                      <td colSpan={5} className="table-status">
-                        Loading vehicles...
-                      </td>
-                    </tr>
-                ) : error ? (
-                    <tr>
-                      <td colSpan={5} className="table-status">
-                        Unable to display vehicles.
-                      </td>
-                    </tr>
-                ) : vehicles.length === 0 ? (
-                    <tr>
-                      <td colSpan={5} className="table-status">
-                        No vehicles found.
-                      </td>
-                    </tr>
-                ) : (
-                    vehicles.map(vehicle => (
-                        <tr key={vehicle.id}>
-                          <td className="owner-cell">
-                            {vehicle.ownerName}
-                          </td>
+                        <th>
+                          <SortHeader
+                              label="Weight"
+                              field="weight"
+                              sortBy={sortBy}
+                              direction={direction}
+                              onSort={handleSort}
+                          />
+                        </th>
 
-                          <td>
-                            {vehicle.manufacturerName}
-                          </td>
+                        <th>Category</th>
+                      </tr>
+                      </thead>
 
-                          <td>
-                            {vehicle.yearOfManufacture}
-                          </td>
+                      <tbody>
+                      {loading ? (
+                          <tr>
+                            <td colSpan={5} className="table-status">
+                              Loading vehicles...
+                            </td>
+                          </tr>
+                      ) : error ? (
+                          <tr>
+                            <td colSpan={5} className="table-status">
+                              Unable to display vehicles.
+                            </td>
+                          </tr>
+                      ) : vehicles.length === 0 ? (
+                          <tr>
+                            <td colSpan={5} className="table-status">
+                              No vehicles found.
+                            </td>
+                          </tr>
+                      ) : (
+                          vehicles.map(vehicle => (
+                              <tr key={vehicle.id}>
+                                <td className="owner-cell">
+                                  {vehicle.ownerName}
+                                </td>
+                                <td>{vehicle.manufacturerName}</td>
+                                <td>{vehicle.yearOfManufacture}</td>
+                                <td>{vehicle.weight.toFixed(2)} kg</td>
+                                <td>
+                            <span className="category-pill">
+                              <CarFront size={15} />
+                              {vehicle.categoryName}
+                            </span>
+                                </td>
+                              </tr>
+                          ))
+                      )}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              </>
+          ) : (
+              <>
+                <div className="page-heading">
+                  <div>
+                    <h1>Category Management</h1>
+                    <p>
+                      Manage vehicle categories and weight ranges.
+                    </p>
+                  </div>
+                </div>
 
-                          <td>
-                            {vehicle.weight.toFixed(2)} kg
-                          </td>
-
-                          <td>
-                        <span className="category-pill">
-                          <CarFront size={15} />
-                          {vehicle.categoryName}
-                        </span>
-                          </td>
-                        </tr>
-                    ))
-                )}
-                </tbody>
-              </table>
-            </div>
-          </section>
+                <CategoryManagement />
+              </>
+          )}
         </main>
 
-        {/* Add Vehicle modal */}
         {showAddVehicle && (
             <AddVehicleForm
                 onClose={() => setShowAddVehicle(false)}

@@ -562,3 +562,147 @@
     flex: 1;
   }
 }
+
+
+/* ========================================
+   Category Management Navigation
+======================================== */
+
+.app-navigation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.nav-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: #64748b;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nav-button:hover {
+  background: #f1f5f9;
+}
+
+.nav-button.active {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+/* ========================================
+   Category Management Table
+======================================== */
+
+.category-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.category-table-container {
+  overflow-x: auto;
+}
+
+.category-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
+}
+
+.category-table th {
+  padding: 15px 18px;
+  background: #f9fafc;
+  border-bottom: 1px solid #e9edf3;
+  text-align: left;
+  color: #526078;
+  font-size: 13px;
+}
+
+.category-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #eef1f5;
+}
+
+.category-table input {
+  width: 100%;
+  min-width: 100px;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #d5dce7;
+  border-radius: 8px;
+  font: inherit;
+  color: #18243a;
+}
+
+.category-table input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.category-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px;
+  border: none;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #dc2626;
+  cursor: pointer;
+}
+
+.category-delete:hover:not(:disabled) {
+  background: #fee2e2;
+}
+
+.category-delete:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.category-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 22px 24px;
+}
+
+.category-success {
+  margin: 20px 24px;
+  padding: 14px;
+  border-radius: 8px;
+  background: #ecfdf5;
+  color: #047857;
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    height: auto;
+    min-height: 76px;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .app-navigation {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .category-heading,
+  .category-actions {
+    flex-wrap: wrap;
+  }
+}
