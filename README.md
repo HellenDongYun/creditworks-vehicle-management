@@ -1,4 +1,3 @@
-
 # CreditWorks Vehicle Management
 
 A full-stack vehicle management application developed for the CreditWorks Software Engineer technical assignment. It allows users to register vehicles, sort and view vehicle records, and manage configurable weight-based vehicle categories.
@@ -42,6 +41,8 @@ CreditWorks/
 │       ├── CreditWorks.Domain.Tests/
 │       └── CreditWorks.IntegrationTests/
 ├── frontend/
+├── .config/
+│   └── dotnet-tools.json
 ├── compose.yaml
 ├── .env.example
 └── README.md
@@ -112,13 +113,14 @@ docker compose logs sqlserver
 cd backend
 dotnet restore
 dotnet build
+cd ..
 ```
 
 ### 5. Initialise the database
 
 This repository includes EF Core migrations under `backend/CreditWorks.Infrastructure/Persistence/Migrations`. The database schema must be created **before** starting the API, because the startup seeder queries the manufacturer and category tables.
 
-From the **repository root**, restore the local .NET tools and apply the existing database migrations:
+From the **repository root** (after returning from `backend/` in step 4), restore the local .NET tools and apply the existing database migrations:
 
 ```bash
 dotnet tool restore
@@ -156,7 +158,7 @@ If the database already contains vehicles, demo vehicle insertion is skipped and
 
 Demo vehicle seeding is disabled outside the Development environment. Restarting the application does not add duplicate demo vehicles while the table contains records.
 
-**Note:** The eight-vehicle seeding behaviour is configured in code; verification against a fresh, empty database is still pending.
+**Verification status:** Demo vehicle seeding is implemented in code, but the eight-vehicle result has not yet been verified against a fresh, empty database. A populated local database may continue to display its existing vehicles.
 
 
 ### 6. Run the backend
@@ -196,9 +198,9 @@ Use **Add Vehicle** to register a vehicle. The application determines its catego
 
 ### Categories
 
-Use **Categories** to edit category names, icon identifiers (with live preview), and weight boundaries, add new categories, or remove existing ones. Click **Save Changes** to persist a valid configuration. After a configuration change, vehicles are classified according to the current ranges.
+Use **Categories** to edit category names, select supported category icons from a dropdown with live preview, and adjust weight boundaries. You can also add or remove categories. Click **Save Changes** to persist a valid configuration. After a configuration change, existing vehicles are classified according to the current ranges.
 
-Category icon identifiers are stored as strings in SQL Server and returned with vehicle data as `categoryIcon`. The shared `CategoryIcon.tsx` component maps supported identifiers such as `car-front`, `car`, and `truck` to Lucide SVG icons. The vehicle list renders the saved icon dynamically, and the category editor shows a live icon preview. Unsupported identifiers display a fallback icon. **Icon editing, saving, and dynamic vehicle-list rendering have been manually tested successfully.**
+Category icon identifiers are stored as strings in SQL Server and returned with vehicle data as `categoryIcon`. The shared `CategoryIcon.tsx` component maps supported identifiers such as `car-front`, `car`, and `truck` to Lucide SVG icons. The vehicle list renders the saved icon dynamically, and the category editor provides a dropdown of supported icons with live preview. Previously saved unsupported identifiers are preserved when editing and display a fallback icon in the UI. **Icon editing, saving, and dynamic vehicle-list rendering have been manually tested successfully.**
 
 ## Category Rules and Boundary Semantics
 
@@ -254,7 +256,7 @@ The backend validates the full proposed category configuration before accepting 
 | `PUT` | `/api/categories/{id}` | Update a category |
 | `DELETE` | `/api/categories/{id}` | Delete a category |
 
-Refer to Swagger for request/response schemas and the exact supported sorting query parameters.
+Refer to Swagger for request/response schemas, the exact supported sorting query parameters, and the authoritative list of available routes. Verify the individual category endpoints above against the current controller implementation before submission.
 
 ## Automated Testing
 
@@ -300,7 +302,7 @@ Potential future enhancements include:
 - Authentication and role-based access for category administration.
 - Concurrency/version checks for simultaneous category edits by multiple administrators.
 - Pagination and server-side filtering for larger vehicle datasets.
-- A searchable icon picker with validation against supported icon names.
+- A searchable icon picker with a broader Lucide icon catalogue and server-side validation of supported icon identifiers.
 - More extensive frontend component and end-to-end tests.
 - Structured observability, deployment automation, and production secret management.
 
@@ -308,7 +310,7 @@ Potential future enhancements include:
 
 The following workflow has been manually verified in the running application:
 
-1. Open **Categories** and change an existing category icon identifier to a supported value such as `truck`.
+1. Open **Categories** and select a supported icon such as `truck` from the dropdown.
 2. Confirm the icon preview updates and save the configuration.
 3. Open **Vehicles** and confirm vehicles in that category display the newly selected SVG icon.
 4. Restore the original icon, save again, and confirm the vehicle list reflects the restored icon.
